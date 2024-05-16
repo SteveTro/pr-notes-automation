@@ -18,13 +18,18 @@ COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline |
 while read line
 do
   TICKET_NUMBER=$(echo $line | grep -oE 'AR-[0-9]+')
+
+  echo "Processing $TICKET_NUMBER"
   COMMIT_MESSAGE=$(echo $line | sed -r 's/AR-[0-9]+: //')
   PR_NUMBER=$(echo $line | grep -oE '#[0-9]+')
 
   JSON=$(gh pr view $PR_NUMBER --json headRefName --jq '.headRefName')
   TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)')
 
+  echo "Type: $TYPE"
   CURR_LINE="- [ ] [$TICKET_NUMBER - $COMMIT_MESSAGE]($INPUT_JIRA_BASE_URL$TICKET_NUMBER)\n"
+  echo $CURR_LINE
+
   if [[ $TYPE == *"feature"* ]]; then
     FEATURE_TICKETS+=$CURR_LINE
   elif [[ $TYPE == *"bugfix"* ]]; then
@@ -40,6 +45,11 @@ done < <(echo "$COMMIT_MESSAGES")
 [[ -z "$BUGFIX_TICKETS" ]] && BUGFIX_TICKETS="-\n"
 [[ -z "$MAINTENANCE_TICKETS" ]] && MAINTENANCE_TICKETS="-\n"
 [[ -z "$OTHER_TICKETS" ]] && OTHER_TICKETS="-\n"
+
+echo "FEATURE_TICKETS: $FEATURE_TICKETS"
+echo "BUGFIX_TICKETS: $BUGFIX_TICKETS"
+echo "MAINTENANCE_TICKETS: $MAINTENANCE_TICKETS"
+echo "OTHER_TICKETS: $OTHER_TICKETS"
 
 sed -e "s|{FEATURE_TICKETS}|$FEATURE_TICKETS|" \
     -e "s|{BUGFIX_TICKETS}|$BUGFIX_TICKETS|" \
