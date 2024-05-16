@@ -15,6 +15,10 @@ OTHER_TICKETS=""
 # Fetch commit messages
 COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline | awk '{ $1=""; print substr($0,2) }' | grep -E 'AR-[0-9]+' | sort | uniq)
 
+
+echo "INPUT_BASE_BRANCH: $INPUT_BASE_BRANCH"
+echo "INPUT_RELEASE_BRANCH: $INPUT_RELEASE_BRANCH"
+
 while read line
 do
   TICKET_NUMBER=$(echo $line | grep -oE 'AR-[0-9]+')
