@@ -1,15 +1,15 @@
 name: 'Generate Release Notes'
 description: 'Generates release notes based on commits between branches'
 inputs:
-  INPUT_BASE_BRANCH:
+  BASE_BRANCH:
     description: 'Base branch for comparison'
     required: true
     default: 'origin/main'
-  INPUT_RELEASE_BRANCH:
+  RELEASE_BRANCH:
     description: 'Release branch for comparison'
     required: true
     default: 'origin/release/1.308.0'
-  INPUT_JIRA_BASE_URL:
+  JIRA_BASE_URL:
     description: 'JIRA Base URL for issue linking'
     required: true
     default: 'https://plan-a.atlassian.net/browse/'
