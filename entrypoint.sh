@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Authenticate GitHub CLI
-echo "${GITHUB_TOKEN}" | gi --with-token
+echo "${GITHUB_TOKEN}" | gh auth login --with-token
 
 echo "Current directory: $(pwd)"
 echo "List of files:"
-ls -l
+ls -al
+cat .github/release.md
 
 # Fetch the template from the repository
 TEMPLATE=$(cat .github/release.md)
