@@ -1,23 +1,22 @@
-name: 'Generate PR Notes'
-description: 'Generates PR notes based on commits between branches'
+name: 'Generate Release Notes'
+description: 'Generates release notes based on commits between branches'
 inputs:
   base_branch:
-    description: 'Base branch'
+    description: 'Base branch for comparison'
     required: true
     default: 'origin/main'
   release_branch:
-    description: 'Release branch'
+    description: 'Release branch for comparison'
     required: true
     default: 'origin/release/1.308.0'
   jira_base_url:
-    description: 'JIRA Base URL'
+    description: 'JIRA Base URL for issue linking'
     required: true
     default: 'https://plan-a.atlassian.net/browse/'
+outputs:
+  status:
+    description: "The status of the script execution"
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ github.workspace }}
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
