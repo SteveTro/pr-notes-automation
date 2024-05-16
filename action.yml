@@ -16,6 +16,8 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ github.workspace }}
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
