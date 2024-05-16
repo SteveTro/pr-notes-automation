@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git config --global --add safe.directory /github/workspace
+
 # Authenticate GitHub CLI
 echo "${GITHUB_TOKEN}" | gh auth login --with-token
 
@@ -11,6 +13,8 @@ FEATURE_TICKETS=""
 BUGFIX_TICKETS=""
 MAINTENANCE_TICKETS=""
 OTHER_TICKETS=""
+
+git fetch --all
 
 # Fetch commit messages
 COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline | awk '{ $1=""; print substr($0,2) }' | grep -E 'AR-[0-9]+' | sort | uniq)
