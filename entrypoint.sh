@@ -3,11 +3,6 @@
 # Authenticate GitHub CLI
 echo "${GITHUB_TOKEN}" | gh auth login --with-token
 
-echo "Current directory: $(pwd)"
-echo "List of files:"
-ls -al
-cat .github/release.md
-
 # Fetch the template from the repository
 TEMPLATE=$(cat .github/release.md)
 
@@ -51,3 +46,5 @@ sed -e "s|{FEATURE_TICKETS}|$FEATURE_TICKETS|" \
     -e "s|{MAINTENANCE_TICKETS}|$MAINTENANCE_TICKETS|" \
     -e "s|{OTHER_TICKETS}|$OTHER_TICKETS|" \
     .github/release.md > temp_release.md
+
+cat temp_release.md
