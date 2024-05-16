@@ -1,0 +1,22 @@
+name: 'Generate PR Notes'
+description: 'Generates PR notes based on commits between branches'
+inputs:
+  base_branch:
+    description: 'Base branch'
+    required: true
+    default: 'origin/main'
+  release_branch:
+    description: 'Release branch'
+    required: true
+    default: 'origin/release'
+  jira_base_url:
+    description: 'JIRA Base URL for ticket links'
+    required: true
+    default: 'https://plan-a.atlassian.net/browse/'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+env:
+  INPUT_BASE_BRANCH: ${{ inputs.base_branch }}
+  INPUT_RELEASE_BRANCH: ${{ inputs.release_branch }}
+  INPUT_JIRA_BASE_URL: ${{ inputs.jira_base_url }}
