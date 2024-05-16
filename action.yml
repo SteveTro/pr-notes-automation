@@ -8,15 +8,12 @@ inputs:
   release_branch:
     description: 'Release branch'
     required: true
-    default: 'origin/release'
+    default: 'origin/release/1.308.0'
   jira_base_url:
-    description: 'JIRA Base URL for ticket links'
+    description: 'JIRA Base URL'
     required: true
     default: 'https://plan-a.atlassian.net/browse/'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-env:
-  INPUT_BASE_BRANCH: ${{ inputs.base_branch }}
-  INPUT_RELEASE_BRANCH: ${{ inputs.release_branch }}
-  INPUT_JIRA_BASE_URL: ${{ inputs.jira_base_url }}
+
