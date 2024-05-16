@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Authenticate GitHub CLI
+echo "${GITHUB_TOKEN}" | gh auth login --with-token
+
 # Fetch the template from the repository
 TEMPLATE=$(cat .github/release.md)
 
