@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit on error, trace all commands, fail on pipeline errors
-# set -eo pipefail
+set -eo pipefail
 
 echo "Input variables are:"
 echo "GITHUB TOKEN: $GITHUB_TOKEN"
