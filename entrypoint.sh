@@ -54,7 +54,7 @@ if [[ -n "$COMMIT_MESSAGES" ]]; then
     PR_NUMBER=$(echo $line | grep -oE '#[0-9]+')
 
     JSON=$(gh pr view $PR_NUMBER --json headRefName --jq '.headRefName')
-    TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)')
+    TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)/' | grep -oE '^(feature|bugfix|maintenance)')
 
     echo "Type: $TYPE"
     CURR_LINE="- [ ] [$TICKET_NUMBER - $COMMIT_MESSAGE]($INPUT_JIRA_BASE_URL$TICKET_NUMBER)\n"
