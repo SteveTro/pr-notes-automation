@@ -36,7 +36,9 @@ OTHER_TICKETS=""
 git fetch --all || { echo 'Failed to fetch repositories'; exit 1; }
 
 # Fetch commit messages
-COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline | awk '{ $1=""; print substr($0,2) }' | grep -E 'AR-[0-9]+' | sort | uniq)
+COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline | \
+awk '{ commit=$1; $1=""; msg=substr($0,2); if (match(msg, /AR-[0-9]+/)) { ticket=substr(msg, RSTART, RLENGTH); if (!seen[ticket]++) print ticket ": " msg } }' | \
+sort -u -k1,1)
 
 echo "COMMIT_MESSAGES: $COMMIT_MESSAGES"
 echo "INPUT_BASE_BRANCH: $INPUT_BASE_BRANCH"
