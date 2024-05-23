@@ -4,7 +4,7 @@
 set -eo pipefail
 
 # Check if required environment variables are set
-if [[ -z "$GITHUB_TOKEN" || -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" ]]; then
+if [[ -z "$GITHUB_TOKEN" || -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" -z "$$INPUT_TEMPLATE" ]]; then
   echo "Required environment variables are not set. Exiting..."
   exit 1
 fi
@@ -13,11 +13,11 @@ git config --global --add safe.directory /github/workspace
 
 echo "${GITHUB_TOKEN}" | gh auth login --with-token || { echo 'GitHub login failed'; exit 1; }
 
-if [[ ! -f .github/release.md ]]; then
+if [[ ! -f $$INPUT_TEMPLATE ]]; then
   echo "Release template not found. Exiting..."
   exit 1
 fi
-TEMPLATE=$(cat .github/release.md)
+TEMPLATE=$(cat $$INPUT_TEMPLATE)
 
 # Initialize placeholders
 FEATURE_TICKETS=""
@@ -78,6 +78,6 @@ sed -e "s|{FEATURE_TICKETS}|$FEATURE_TICKETS|" \
     -e "s|{BUGFIX_TICKETS}|$BUGFIX_TICKETS|" \
     -e "s|{MAINTENANCE_TICKETS}|$MAINTENANCE_TICKETS|" \
     -e "s|{OTHER_TICKETS}|$OTHER_TICKETS|" \
-    .github/release.md > temp_release.md
+    $TEMPLATE > temp_release.md
 
 cat temp_release.md
