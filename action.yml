@@ -13,6 +13,10 @@ inputs:
     description: 'JIRA Base URL for issue linking'
     required: true
     default: 'https://plan-a.atlassian.net/browse/'
+  TEMPLATE:
+    description: 'Template for release notes'
+    required: true
+    default: '.github/release.md'
 outputs:
   status:
     description: "The status of the script execution"

@@ -13,7 +13,9 @@ echo "JIRA BASE URL: $INPUT_JIRA_BASE_URL"
 git config --global --add safe.directory /github/workspace
 
 # Authenticate GitHub CLI
-echo "${GITHUB_TOKEN}" | gh auth login --with-token
+set +e
+echo "$GITHUB_TOKEN" | gh auth login --with-token
+set -e
 
 # Fetch the template from the repository
 TEMPLATE=$(cat .github/release.md)
