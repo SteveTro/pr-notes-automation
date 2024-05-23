@@ -3,6 +3,13 @@
 # Exit on error, trace all commands, fail on pipeline errors
 set -eo pipefail
 
+echo "Input variables are:"
+echo "GITHUB TOKEN: $GITHUB_TOKEN"
+echo "BASE BRANCH: $INPUT_BASE_BRANCH"
+echo "RELEASE BRANCH: $INPUT_RELEASE_BRANCH"
+echo "TEMPLATE: $INPUT_TEMPLATE"
+echo "JIRA BASE URL: $INPUT_JIRA_BASE_URL"
+
 # Check if required environment variables are set
 if [[ -z "$GITHUB_TOKEN" || -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" || -z "$INPUT_TEMPLATE" ]]; then
   echo "Required environment variables are not set. Exiting..."
@@ -13,7 +20,7 @@ git config --global --add safe.directory /github/workspace
 
 echo "${GITHUB_TOKEN}" | gh auth login --with-token || { echo 'GitHub login failed'; exit 1; }
 
-if [[ ! -f $$INPUT_TEMPLATE ]]; then
+if [[ ! -f $INPUT_TEMPLATE ]]; then
   echo "Release template not found. Exiting..."
   exit 1
 fi
