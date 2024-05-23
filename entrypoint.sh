@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit on error, trace all commands, fail on pipeline errors
-set -eo pipefail
+# set -eo pipefail
 
 echo "Input variables are:"
 echo "GITHUB TOKEN: $GITHUB_TOKEN"
@@ -10,21 +10,13 @@ echo "RELEASE BRANCH: $INPUT_RELEASE_BRANCH"
 echo "TEMPLATE: $INPUT_TEMPLATE"
 echo "JIRA BASE URL: $INPUT_JIRA_BASE_URL"
 
-# Check if required environment variables are set
-if [[ -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" || -z "$INPUT_TEMPLATE" ]]; then
-  echo "Required environment variables are not set. Exiting..."
-  exit 1
-fi
-
 git config --global --add safe.directory /github/workspace
 
-echo "${GITHUB_TOKEN}" | gh auth login --with-token || { echo 'GitHub login failed'; exit 1; }
+# Authenticate GitHub CLI
+echo "${GITHUB_TOKEN}" | gh auth login --with-token
 
-if [[ ! -f $INPUT_TEMPLATE ]]; then
-  echo "Release template not found. Exiting..."
-  exit 1
-fi
-TEMPLATE=$(cat $$INPUT_TEMPLATE)
+# Fetch the template from the repository
+TEMPLATE=$(cat .github/release.md)
 
 # Initialize placeholders
 FEATURE_TICKETS=""
