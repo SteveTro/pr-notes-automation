@@ -5,7 +5,7 @@
 echo "$GITHUB_TOKEN" | gh auth login --with-token
 git config --global --add safe.directory /github/workspace
 
-set -eo pipefail
+# set -eo pipefail
 
 echo "Input variables are:"
 echo "GITHUB TOKEN: $GITHUB_TOKEN"
