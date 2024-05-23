@@ -79,6 +79,6 @@ sed -e "s|{FEATURE_TICKETS}|$FEATURE_TICKETS|" \
     -e "s|{BUGFIX_TICKETS}|$BUGFIX_TICKETS|" \
     -e "s|{MAINTENANCE_TICKETS}|$MAINTENANCE_TICKETS|" \
     -e "s|{OTHER_TICKETS}|$OTHER_TICKETS|" \
-    $TEMPLATE > temp_release.md
+    $INPUT_TEMPLATE > temp_release.md
 
 cat temp_release.md
