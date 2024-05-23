@@ -4,7 +4,7 @@
 set -eo pipefail
 
 # Check if required environment variables are set
-if [[ -z "$GITHUB_TOKEN" || -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" -z "$INPUT_TEMPLATE" ]]; then
+if [[ -z "$GITHUB_TOKEN" || -z "$INPUT_BASE_BRANCH" || -z "$INPUT_RELEASE_BRANCH" || -z "$INPUT_TEMPLATE" ]]; then
   echo "Required environment variables are not set. Exiting..."
   exit 1
 fi
