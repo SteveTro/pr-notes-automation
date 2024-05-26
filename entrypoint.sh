@@ -36,7 +36,7 @@ OTHER_TICKETS=""
 git fetch --all || { echo 'Failed to fetch repositories'; exit 1; }
 
 # Fetch commit messages
-COMMIT_MESSAGES=$(git log --oneline main...development | grep '(\#[0-9]\+)$')
+COMMIT_MESSAGES=$(git log --oneline $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH | grep '(\#[0-9]\+)$')
 
 echo "COMMIT_MESSAGES: $COMMIT_MESSAGES"
 echo "INPUT_BASE_BRANCH: $INPUT_BASE_BRANCH"
