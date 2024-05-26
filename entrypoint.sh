@@ -36,8 +36,8 @@ OTHER_TICKETS=""
 git fetch --all || { echo 'Failed to fetch repositories'; exit 1; }
 
 # Fetch commit messages
-echo ${git log --oneline $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH}
-COMMIT_MESSAGES=$(git log --oneline $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH | grep '(\#[0-9]\+)$')
+echo $(git log --oneline $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH)
+COMMIT_MESSAGES=$(git log --oneline $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH | grep '(\#[0-9]\+)$' | awk '{ $1=""; print substr($0, 2) }')
 
 echo "COMMIT_MESSAGES: $COMMIT_MESSAGES"
 echo "INPUT_BASE_BRANCH: $INPUT_BASE_BRANCH"
@@ -53,9 +53,11 @@ if [[ -n "$COMMIT_MESSAGES" ]]; then
     PR_NUMBER=$(echo $line | grep -oE '#[0-9]+')
 
     JSON=$(gh pr view $PR_NUMBER --json headRefName --jq '.headRefName')
-    TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)/' | grep -oE '^(feature|bugfix|maintenance)')
+    echo "JSON: $JSON"
 
+    TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)/' | grep -oE '^(feature|bugfix|maintenance)')
     echo "Type: $TYPE"
+
     CURR_LINE="- [ ] [$line]($INPUT_JIRA_BASE_URL$TICKET_NUMBER)\n"
     echo "CURR_LINE $CURR_LINE"
 
