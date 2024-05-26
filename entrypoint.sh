@@ -36,9 +36,7 @@ OTHER_TICKETS=""
 git fetch --all || { echo 'Failed to fetch repositories'; exit 1; }
 
 # Fetch commit messages
-COMMIT_MESSAGES=$(git log $INPUT_BASE_BRANCH...$INPUT_RELEASE_BRANCH --oneline | \
-awk '{ commit=$1; $1=""; msg=substr($0,2); if (match(msg, /AR-[0-9]+/)) { ticket=substr(msg, RSTART, RLENGTH); if (!seen[ticket]++) print ticket ": " substr(msg, RSTART + RLENGTH + 2) } }' | \
-sort -u -k1,1)
+COMMIT_MESSAGES=$(git log --oneline main...development | grep '(\#[0-9]\+)$')
 
 echo "COMMIT_MESSAGES: $COMMIT_MESSAGES"
 echo "INPUT_BASE_BRANCH: $INPUT_BASE_BRANCH"
@@ -47,7 +45,7 @@ echo "COMMIT_MESSAGES: $COMMIT_MESSAGES"
 if [[ -n "$COMMIT_MESSAGES" ]]; then
   while read line; do
     echo "Working on $line"
-    TICKET_NUMBER=$(echo $line | grep -oE 'AR-[0-9]+')
+    TICKET_NUMBER=$(echo $line | grep -oE '[A-Za-z]+-[0-9]+')
 
     echo "Processing $TICKET_NUMBER"
     COMMIT_MESSAGE=$(echo $line | sed -r 's/AR-[0-9]+: //')
@@ -57,7 +55,7 @@ if [[ -n "$COMMIT_MESSAGES" ]]; then
     TYPE=$(echo $JSON | grep -oE '^(feature|bugfix|maintenance)/' | grep -oE '^(feature|bugfix|maintenance)')
 
     echo "Type: $TYPE"
-    CURR_LINE="- [ ] [$TICKET_NUMBER - $COMMIT_MESSAGE]($INPUT_JIRA_BASE_URL$TICKET_NUMBER)\n"
+    CURR_LINE="- [ ] [$line]($INPUT_JIRA_BASE_URL$TICKET_NUMBER)\n"
     echo "CURR_LINE $CURR_LINE"
 
     if [[ $TYPE == *"feature"* ]]; then
